@@ -107,4 +107,3 @@ class MediaTypeGuardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->guard->hasCorrectlySetAcceptHeader($invalidAcceptRequest));
     }
 }
-

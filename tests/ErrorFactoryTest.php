@@ -38,4 +38,3 @@ class ErrorFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedIdError, $idError);
     }
 }
-

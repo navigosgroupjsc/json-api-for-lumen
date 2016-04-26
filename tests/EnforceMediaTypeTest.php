@@ -98,4 +98,3 @@ class EnforceMediaTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($response, $middlewareResponse);
     }
 }
-

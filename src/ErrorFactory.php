@@ -14,8 +14,8 @@ class ErrorFactory
         $code = null,
         array $source = null,
         $meta = null
-    ): Error
-    {
+    ): Error {
+    
         return new Error(
             $id ?? null,
             $aboutLink ?? new Link('http://jsonapi.org/format/#content-negotiation-clients'),
@@ -34,8 +34,8 @@ class ErrorFactory
         $code = null,
         array $source = null,
         $meta = null
-    ): Error
-    {
+    ): Error {
+    
         return new Error(
             $id ?? null,
             $aboutLink ?? new Link('http://jsonapi.org/format/#content-negotiation-clients'),
