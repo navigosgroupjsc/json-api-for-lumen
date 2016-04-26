@@ -12,7 +12,7 @@ $ composer require realpage/json-api-for-lumen
 ### Lumen
 You can register the service provider in `bootstrap/app.php`
 ``` php
-$app->register(\RealPage\JsonApi\Lumen::class);
+$app->register(\RealPage\JsonApi\Lumen\ServiceProvider::class);
 ```
 
 ## Usage
