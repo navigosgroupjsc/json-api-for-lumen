@@ -1,6 +1,8 @@
 # Json-Api For Lumen
 Lumen helpers to help ease implementation of json-api standards
 
+[![Latest Stable Version](https://poser.pugx.org/realpage/json-api-for-lumen/v/stable)](https://packagist.org/packages/realpage/json-api-for-lumen) [![Total Downloads](https://poser.pugx.org/realpage/json-api-for-lumen/downloads)](https://packagist.org/packages/realpage/json-api-for-lumen) [![Latest Unstable Version](https://poser.pugx.org/realpage/json-api-for-lumen/v/unstable)](https://packagist.org/packages/realpage/json-api-for-lumen) [![License](https://poser.pugx.org/realpage/json-api-for-lumen/license)](https://packagist.org/packages/realpage/json-api-for-lumen)
+
 ## Install
 Via Composer
 ``` bash
