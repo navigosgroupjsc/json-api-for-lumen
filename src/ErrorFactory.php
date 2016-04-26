@@ -15,7 +15,6 @@ class ErrorFactory
         array $source = null,
         $meta = null
     ): Error {
-    
         return new Error(
             $id ?? null,
             $aboutLink ?? new Link('http://jsonapi.org/format/#content-negotiation-clients'),
@@ -35,7 +34,6 @@ class ErrorFactory
         array $source = null,
         $meta = null
     ): Error {
-    
         return new Error(
             $id ?? null,
             $aboutLink ?? new Link('http://jsonapi.org/format/#content-negotiation-clients'),
