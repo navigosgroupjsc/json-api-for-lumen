@@ -17,7 +17,7 @@ $app->register(\RealPage\JsonApi\Lumen::class);
 You can register the middleware in `bootstrap/app.php`
 ``` php
 $app->middleware([
-    'json-api' => RealPage\JsonApi\Lumen\EnforceMediaType::class,
+    'json-api.enforce-media-type' => RealPage\JsonApi\Lumen\EnforceMediaType::class,
 ]);
 ```
 You can then use the middleware within your `routes.php` file
