@@ -1,0 +1,50 @@
+{
+    "name": "realpage/json-api-for-lumen",
+    "type": "library",
+    "description": "Lumen helpers to help ease implementation of json-api standards",
+    "keywords": [
+        "lumen",
+        "json-api",
+        "realpage"
+    ],
+    "homepage": "https://github.com/realpage/json-api-for-lumen",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ben Kuhl",
+            "email": "ben.kuhl@realpage.com"
+        },
+        {
+            "name": "John Laswell",
+            "email": "john.laswell@realpage.com"
+        },
+        {
+            "name": "David Yurek",
+            "email": "david.yurek@realpage.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0",
+        "neomerx/json-api": "dev-master",
+        "illuminate/http": "^5.2",
+        "illuminate/support": "^5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.3",
+        "scrutinizer/ocular": "~1.1",
+        "squizlabs/php_codesniffer": "~2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "RealPage\\JsonApi\\Lumen\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\RealPage\\JsonApi\\Lumen\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
