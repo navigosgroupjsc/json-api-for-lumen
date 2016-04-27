@@ -12,14 +12,14 @@ $ composer require realpage/json-api-for-lumen
 ### Lumen
 You can register the service provider in `bootstrap/app.php`
 ``` php
-$app->register(\RealPage\JsonApi\Lumen\ServiceProvider::class);
+$app->register(RealPage\JsonApi\Lumen\ServiceProvider::class);
 ```
 
 ## Usage
 You can register the middleware in `bootstrap/app.php`
 ``` php
-$app->middleware([
-    'json-api.enforce-media-type' => RealPage\JsonApi\Lumen\EnforceMediaType::class,
+$app->routeMiddleware([
+    'jsonApi.enforceMediaType' => RealPage\JsonApi\Lumen\EnforceMediaType::class,
 ]);
 ```
 You can then use the middleware within your `routes.php` file

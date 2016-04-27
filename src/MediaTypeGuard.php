@@ -18,9 +18,9 @@ class MediaTypeGuard
         return $this->contentType;
     }
 
-    public function validateExistingContentType(string $contentType): bool
+    public function validateExistingContentType(Request $request): bool
     {
-        return str_is($this->getContentType(), $contentType) || str_is('', $contentType);
+        return str_is($this->getContentType(), $request->header('Accept')) || str_is('', $request->header('Accept'));
     }
 
     public function clientRequestHasJsonApiData(Request $request)
