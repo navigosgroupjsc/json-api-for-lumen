@@ -6,13 +6,15 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Neomerx\JsonApi\Encoder\Encoder;
+use RealPage\JsonApi\Lumen\MediaTypeGuard;
 use Neomerx\JsonApi\Encoder\EncoderOptions;
 use Neomerx\JsonApi\Exceptions\ErrorCollection;
 
 class EnforceMediaType
 {
-    public function handle(Request $request, Closure $next, MediaTypeGuard $guard)
+    public function handle(Request $request, Closure $next, MediaTypeGuard $guard = null)
     {
+        $guard = $guard ?? app(MediaTypeGuard::class);
         // http://jsonapi.org/format/#content-negotiation
         if (!$guard->validateExistingContentType($request) || !$guard->hasCorrectHeadersForData($request)) {
             $errors = (new ErrorCollection())->add(ErrorFactory::buildUnsupportedMediaType());
