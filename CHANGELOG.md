@@ -4,6 +4,23 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Updates will follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [1.0.1] - 2016-04-27
+### Added
+- Nothing
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Config loading into lumen repository due to config paths being incorrect
+- Add class registration for managing lazy dependency injection within the `EnforceMediaType` middleware
+
+### Removed
+- Nothing
+
+### Security
+- Nothing
+
 ## [1.0.0] - 2016-04-26
 ### Added
 - Initial Release!
