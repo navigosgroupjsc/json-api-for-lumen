@@ -24,13 +24,16 @@ class MediaTypeGuardTest extends \PHPUnit_Framework_TestCase
 
     public function testExistingContentTypeValidation()
     {
-        $validNoContentType = '';
-        $badContentType     = 'application/json';
-        $validContentType   = 'application/vnd.api+json';
+        $noContentTypeRequest    = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
+        $badContentTypeRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
+        $validContentTypeRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
+        $noContentTypeRequest->expects($this->any())->method('header')->with('Accept')->willReturn('');
+        $badContentTypeRequest->expects($this->any())->method('header')->with('Accept')->willReturn('application/json');
+        $validContentTypeRequest->expects($this->any())->method('header')->with('Accept')->willReturn('application/vnd.api+json');
 
-        $this->assertTrue($this->guard->validateExistingContentType($validNoContentType));
-        $this->assertFalse($this->guard->validateExistingContentType($badContentType));
-        $this->assertTrue($this->guard->validateExistingContentType($validContentType));
+        $this->assertTrue($this->guard->validateExistingContentType($noContentTypeRequest));
+        $this->assertFalse($this->guard->validateExistingContentType($badContentTypeRequest));
+        $this->assertTrue($this->guard->validateExistingContentType($validContentTypeRequest));
     }
 
     public function testRecognizesIfJsonDataIsPresent()
