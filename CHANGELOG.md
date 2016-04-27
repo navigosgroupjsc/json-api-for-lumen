@@ -2,7 +2,23 @@
 All Notable changes to `realpage/json-api-for-lumen` will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-Updates will follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
+Updates follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
+
+## [1.0.2] - 2016-04-27
+### Added
+- Nothing
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Fix functional args and request parsing within the `MediaTypeGuard`
+
+### Removed
+- Nothing
+
+### Security
+- Nothing
 
 ## [1.0.1] - 2016-04-27
 ### Added
