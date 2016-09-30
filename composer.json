@@ -9,39 +9,26 @@
     ],
     "homepage": "https://github.com/realpage/json-api-for-lumen",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Ben Kuhl",
-            "email": "ben.kuhl@realpage.com"
-        },
-        {
-            "name": "John Laswell",
-            "email": "john.laswell@realpage.com"
-        },
-        {
-            "name": "David Yurek",
-            "email": "david.yurek@realpage.com"
-        }
-    ],
     "require": {
         "php": "^7.0",
-        "neomerx/json-api": "dev-master",
-        "illuminate/http": "^5.2",
-        "illuminate/support": "^5.2"
+        "neomerx/json-api": "^0.8",
+        "illuminate/http": "^5.3",
+        "illuminate/support": "^5.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.3",
         "scrutinizer/ocular": "~1.1",
-        "squizlabs/php_codesniffer": "~2.3"
+        "squizlabs/php_codesniffer": "~2.3",
+        "mockery/mockery": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "RealPage\\JsonApi\\Lumen\\": "src"
+            "RealPage\\JsonApi\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\RealPage\\JsonApi\\Lumen\\": "tests"
+            "RealPage\\JsonApi\\": "tests"
         }
     },
     "scripts": {

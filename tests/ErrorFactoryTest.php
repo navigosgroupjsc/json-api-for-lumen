@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\RealPage\JsonApi\Lumen;
+namespace RealPage\JsonApi;
 
 use Neomerx\JsonApi\Document\Link;
 use Neomerx\JsonApi\Document\Error;
-use RealPage\JsonApi\Lumen\ErrorFactory;
 
 class ErrorFactoryTest extends \PHPUnit_Framework_TestCase
 {
