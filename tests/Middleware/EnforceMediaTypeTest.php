@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\RealPage\JsonApi\Lumen;
+namespace RealPage\JsonApi\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use RealPage\JsonApi\Lumen\MediaTypeGuard;
-use RealPage\JsonApi\Lumen\EnforceMediaType;
+use RealPage\JsonApi\MediaTypeGuard;
 
 class EnforceMediaTypeTest extends \PHPUnit_Framework_TestCase
 {

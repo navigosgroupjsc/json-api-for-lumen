@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\RealPage\JsonApi\Lumen;
+namespace RealPage\JsonApi;
 
 use Illuminate\Http\Request;
-use RealPage\JsonApi\Lumen\MediaTypeGuard;
 
 class MediaTypeGuardTest extends \PHPUnit_Framework_TestCase
 {
     protected $contentType;
 
+    /** @var MediaTypeGuard */
     protected $guard;
 
     public function setUp()

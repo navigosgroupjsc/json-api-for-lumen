@@ -2,8 +2,8 @@
 
 namespace RealPage\JsonApi\Lumen;
 
-use RealPage\JsonApi\Lumen\MediaTypeGuard;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use RealPage\JsonApi\MediaTypeGuard;
 
 class ServiceProvider extends IlluminateServiceProvider
 {

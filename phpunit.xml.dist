@@ -18,7 +18,7 @@
         <whitelist>
             <directory suffix=".php">src/</directory>
             <exclude>
-                <file>src/ServiceProvider.php</file>
+                <file>src/Lumen/ServiceProvider.php</file>
             </exclude>
         </whitelist>
     </filter>

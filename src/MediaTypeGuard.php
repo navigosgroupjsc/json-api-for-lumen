@@ -1,6 +1,6 @@
 <?php
 
-namespace RealPage\JsonApi\Lumen;
+namespace RealPage\JsonApi;
 
 use Illuminate\Http\Request;
 
