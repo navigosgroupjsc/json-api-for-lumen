@@ -59,7 +59,9 @@ class ValidatesRequestsTest extends \PHPUnit\Framework\TestCase
         $request->shouldReceive('json')->andReturn($json);
 
         $laravelErrors = collect([
-            'path.to.field' => 'field is invalid'
+            'path.to.field' => [
+                'field is invalid'
+            ]
         ]);
         $validator = Mockery::mock(Validator::class);
         $validator->shouldReceive('fails')->andReturnTrue();

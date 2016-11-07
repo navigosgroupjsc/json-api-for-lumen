@@ -24,23 +24,25 @@ abstract class ValidatesRequests
         if ($validator->fails()) {
             // @todo put this somewhere else, this is getting messy
             // @see https://jsonapi.org/examples/#error-objects-basic
-            foreach ($validator->errors()->toArray() as $field => $errorMessage) {
+            foreach ($validator->errors()->toArray() as $field => $errorMessages) {
 
                 // get the pointer for an array so we can pinpoint the section
                 // of json where the error occurred
                 $field = '/'.str_replace('.', '/', $field).'/';
 
-                $this->errors->add(new Error(
-                    null,
-                    null,
-                    422,
-                    null,
-                    'Invalid Attribute',
-                    $errorMessage,
-                    [
-                        'pointer' => $field,
-                    ]
-                ));
+                foreach ($errorMessages as $message) {
+                    $this->errors->add(new Error(
+                        null,
+                        null,
+                        422,
+                        null,
+                        'Invalid Attribute',
+                        $message,
+                        [
+                            'pointer' => $field,
+                        ]
+                    ));
+                }
             }
 
             return false;
