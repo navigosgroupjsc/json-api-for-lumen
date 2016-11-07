@@ -92,6 +92,8 @@ class MyRequest extends Request
 }
 ```
 
+In the controller you'd just call validate on the request:
+
 ```php
     public function store(MyRequest $request)
     {
