@@ -15,7 +15,7 @@ trait ValidatesRequests
     /** @var Factory */
     protected $validatorFactory;
 
-    public function validate(Request $request) : bool
+    public function isValid(Request $request) : bool
     {
         $this->errors = new ErrorCollection();
 

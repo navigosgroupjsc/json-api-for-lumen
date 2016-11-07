@@ -49,7 +49,7 @@ class ValidatesRequestsTest extends \PHPUnit\Framework\TestCase
         )->andReturn($validator);
         $this->validatesRequests->setValidatorFactory($validatorFactory);
 
-        $this->validatesRequests->validate($request);
+        $this->validatesRequests->isValid($request);
         $this->assertEquals(0, $this->validatesRequests->errors()->count());
     }
 
@@ -75,7 +75,7 @@ class ValidatesRequestsTest extends \PHPUnit\Framework\TestCase
         )->andReturn($validator);
         $this->validatesRequests->setValidatorFactory($validatorFactory);
 
-        $this->validatesRequests->validate($request);
+        $this->validatesRequests->isValid($request);
         $this->assertGreaterThan(0, $this->validatesRequests->errors()->count());
 
         /** @var Error $error */
