@@ -3,12 +3,12 @@
 namespace RealPage\JsonApi\Requests;
 
 use Illuminate\Http\Request as IlluminateRequest;
-use Illuminate\Contracts\Validation\Validator;
 use Mockery;
 use Neomerx\JsonApi\Exceptions\ErrorCollection;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use PHPUnit\Framework\TestCase;
 use RealPage\JsonApi\Validation\RequestFailedValidation;
+use RealPage\JsonApi\Validation\ValidatesRequests;
 
 class RequestTest extends TestCase
 {
@@ -17,6 +17,9 @@ class RequestTest extends TestCase
 
     /** @var \RealPage\JsonApi\Requests\Request */
     protected $request;
+
+    /** @var \RealPage\JsonApi\Requests\Request */
+    protected $validator;
 
     public function setUp()
     {
@@ -35,8 +38,7 @@ class RequestTest extends TestCase
     /** @test */
     public function suppliesValidator()
     {
-        $validator = Mockery::mock(Validator::class);
-
+        $validator = Mockery::mock(ValidatesRequests::class);
         $this->request->setValidator($validator);
         $this->assertEquals($validator, $this->request->validator());
     }
@@ -68,7 +70,7 @@ class RequestTest extends TestCase
     /** @test */
     public function canPassValidation()
     {
-        $validator = Mockery::mock(Validator::class);
+        $validator = Mockery::mock(ValidatesRequests::class);
         $validator->shouldReceive('isValid')->with($this->request)->andReturn(true);
 
         $this->request->setValidator($validator);
@@ -80,7 +82,7 @@ class RequestTest extends TestCase
     public function throwsExceptionWhenValidationIsInvalid()
     {
         $errors = new ErrorCollection();
-        $validator = Mockery::mock(Validator::class);
+        $validator = Mockery::mock(ValidatesRequests::class);
         $validator->shouldReceive('isValid')->with($this->request)->andReturn(false);
         $validator->shouldReceive('errors')->andReturn($errors);
 

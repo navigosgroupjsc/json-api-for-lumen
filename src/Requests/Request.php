@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request as IlluminateRequest;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use RealPage\JsonApi\Validation\RequestFailedValidation;
+use RealPage\JsonApi\Validation\ValidatesRequests;
 
 class Request
 {
@@ -28,6 +29,7 @@ class Request
      */
     public function validate()
     {
+        /** @var ValidatesRequests $validator */
         $validator = $this->validator();
 
         if ($validator->isValid($this) === false) {
@@ -55,12 +57,12 @@ class Request
         return $this->json;
     }
 
-    public function validator() : Validator
+    public function validator() : ValidatesRequests
     {
         return $this->validator;
     }
 
-    public function setValidator(Validator $validator)
+    public function setValidator(ValidatesRequests $validator)
     {
         $this->validator = $validator;
     }

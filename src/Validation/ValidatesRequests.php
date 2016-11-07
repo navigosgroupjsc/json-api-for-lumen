@@ -7,7 +7,7 @@ use Neomerx\JsonApi\Exceptions\ErrorCollection;
 use RealPage\JsonApi\Requests\Request;
 use Neomerx\JsonApi\Document\Error;
 
-trait ValidatesRequests
+abstract class ValidatesRequests
 {
     /** @var ErrorCollection */
     protected $errors;
@@ -42,28 +42,28 @@ trait ValidatesRequests
                     ]
                 ));
             }
+
+            return false;
         }
+
+        return true;
     }
 
-    public function rules(array $rules = null) : array
+    public function rules() : array
     {
-        $rules = $rules ?? [];
-
-        return array_merge([
+        return [
             'data'      => 'required',
             'data.type' => 'required|in:'.$this->type(),
-        ], $rules);
+        ];
     }
 
-    public function messages(array $messages = null) : array
+    public function messages() : array
     {
-        $messages = $messages ?? [];
-
-        return array_merge([
+        return [
             'data.required'      => 'Data is required in a valid json api format.',
             'data.type.required' => 'A valid resource type must be provided.',
             'data.type.in'       => 'The resource type provided does not match the expected type of "'.$this->type().'".',
-        ], $messages);
+        ];
     }
 
     public function errors() : ErrorCollection

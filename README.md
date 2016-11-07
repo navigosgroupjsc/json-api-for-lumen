@@ -56,7 +56,41 @@ if ($e instanceof JsonApiException) {
 }
 ```
 
-Use the trait `RealPage\JsonApi\Validation\ValidatesRequests` to the architecture of your liking.  One approach is to use this trait on a `Request`, which would allow you to do:
+Extending a few classes is all that's needed:
+
+```php
+use RealPage\JsonApi\Validation\ValidatesRequests;
+
+class MyValidator extends ValidatesRequests
+{
+    public function rules() : array
+    {
+        return parent::rules([
+            'data.attributes.name' => 'required',
+        ]);
+    }
+    
+    public function messages() : array
+    {
+        return parent::messages([
+            'data.attributes.name.required' => 'A name is required',
+        ]);
+    }
+}
+```
+
+```php
+use RealPage\JsonApi\Requests\Request;
+use RealPage\JsonApi\Validation\ValidatesRequests;
+
+class MyRequest extends Request
+{
+    public function validator() : ValidatesRequests
+    {
+        return new MyValidator();
+    }
+}
+```
 
 ```php
     public function store(MyRequest $request)

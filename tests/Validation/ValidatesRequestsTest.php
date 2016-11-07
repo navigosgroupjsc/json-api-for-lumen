@@ -21,10 +21,8 @@ class ValidatesRequestsTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->validatesRequests = new class {
-            use ValidatesRequests;
-
-            public function type()
+        $this->validatesRequests = new class extends ValidatesRequests {
+            public function type() : string
             {
                 return ValidatesRequestsTest::TYPE;
             }
@@ -99,19 +97,6 @@ class ValidatesRequestsTest extends \PHPUnit\Framework\TestCase
     }
 
     /** @test */
-    public function mergesRules()
-    {
-        $key = 'my-field';
-        $this->assertArrayNotHasKey($key, $this->validatesRequests->rules());
-
-        $extraRule = [
-            $key => 'required'
-        ];
-
-        $this->assertArrayHasKey($key, $this->validatesRequests->rules($extraRule));
-    }
-
-    /** @test */
     public function suppliesDefaultMessages()
     {
         $this->assertEquals([
@@ -119,18 +104,5 @@ class ValidatesRequestsTest extends \PHPUnit\Framework\TestCase
             'data.type.required' => 'A valid resource type must be provided.',
             'data.type.in'       => 'The resource type provided does not match the expected type of "'.self::TYPE.'".',
         ], $this->validatesRequests->messages());
-    }
-
-    /** @test */
-    public function mergesMessages()
-    {
-        $key = 'my-field.required';
-        $this->assertArrayNotHasKey($key, $this->validatesRequests->rules());
-
-        $extraRule = [
-            $key => 'My Error Message'
-        ];
-
-        $this->assertArrayHasKey($key, $this->validatesRequests->rules($extraRule));
     }
 }
