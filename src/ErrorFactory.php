@@ -45,4 +45,23 @@ class ErrorFactory
             $meta
         );
     }
+
+    public static function buildUnauthorized(
+        $id = null,
+        LinkInterface $aboutLink = null,
+        $code = null,
+        array $source = null,
+        $meta = null
+    ): Error {
+        return new Error(
+            $id ?? null,
+            $aboutLink ?? new Link('https://tools.ietf.org/html/rfc7231#section-6.5.3'),
+            '403',
+            $code ?? null,
+            'Forbidden',
+            'Access is denied for one or more of the specified resources',
+            $source,
+            $meta
+        );
+    }
 }

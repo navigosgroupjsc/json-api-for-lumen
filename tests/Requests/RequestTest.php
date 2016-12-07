@@ -7,6 +7,7 @@ use Mockery;
 use Neomerx\JsonApi\Exceptions\ErrorCollection;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use PHPUnit\Framework\TestCase;
+use RealPage\JsonApi\Authorization\RequestFailedAuthorization;
 use RealPage\JsonApi\Validation\RequestFailedValidation;
 use RealPage\JsonApi\Validation\ValidatesRequests;
 
@@ -98,4 +99,49 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(RequestFailedValidation::class, $exception);
         $this->assertEquals($errors, $exception->getErrors());
     }
+
+    /** @test */
+    public function authorizeShouldCheckPolicy()
+    {
+        $action = 'action';
+        $object = new \stdClass;
+
+        $this->illuminateRequest
+            ->shouldReceive('user->cant')
+            ->with($action, $object)
+            ->andReturn(false);
+
+        $this->request->authorize($action, $object);
+    }
+
+    /** @test */
+    public function authorizeShouldSucceedIfAuthorized()
+    {
+        $action = 'action';
+        $object = new \stdClass;
+
+        $this->illuminateRequest
+            ->shouldReceive('user->cant')
+            ->with($action, $object)
+            ->andReturn(false); // authorized
+
+        $result = $this->request->authorize($action, $object);
+        $this->assertEquals(true, $result);
+    }
+
+    /** @test */
+    public function authorizeShouldFailIfUnauthorized()
+    {
+        $action = 'action';
+        $object = new \stdClass;
+
+        $this->illuminateRequest
+            ->shouldReceive('user->cant')
+            ->with($action, $object)
+            ->andReturn(true); // unauthorized
+
+        $this->expectException(RequestFailedAuthorization::class);
+        $this->request->authorize($action, $object);
+    }
+
 }

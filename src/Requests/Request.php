@@ -5,6 +5,8 @@ namespace RealPage\JsonApi\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request as IlluminateRequest;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
+use RealPage\JsonApi\Authorization\RequestFailedAuthorization;
+use RealPage\JsonApi\ErrorFactory;
 use RealPage\JsonApi\Validation\RequestFailedValidation;
 use RealPage\JsonApi\Validation\ValidatesRequests;
 
@@ -35,6 +37,48 @@ class Request
         if ($validator->isValid($this) === false) {
             throw new RequestFailedValidation($validator->errors());
         }
+    }
+
+    /**
+     * Ensure that a requested operation is authorized.
+     * If not, throw an exception.
+     *
+     * This requires a registered Policy.
+     * If no policy is defined,
+     * the framework will throw InvalidArgumentException.
+     *
+     * See also:
+     *   https://laravel.com/docs/master/authorization
+     *   http://jsonapi.org/format/#errors
+     *
+     * @param string $action Desired action; must match a policy method name.
+     * @param mixed  $object Target object; class must match a policy.
+     * @param array  $source Reference to source of error in request.
+     *
+     * @return bool  True on success; throws exception on failure.
+     *
+     * @throws RequestFailedAuthorization
+     *
+     * TODO: use a UUID for the source?
+     */
+    public function authorize(
+        string $action,
+        $object,
+        array $source = null
+    ) {
+        if ($this->request()->user()->cant($action, $object)) {
+            throw new RequestFailedAuthorization(
+                ErrorFactory::buildUnauthorized(
+                    $id = null,
+                    $aboutLink = null,
+                    $code = null,
+                    $source,
+                    $meta = null
+                )
+            );
+        }
+
+        return true;
     }
 
     public function json(): array
