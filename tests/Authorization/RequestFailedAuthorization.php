@@ -11,7 +11,7 @@ class RequestFailedAuthorizationTest extends \PHPUnit\Framework\TestCase
     /** @var ErrorCollection */
     protected $errors;
 
-    /** @var RequestFailedValidation */
+    /** @var RequestFailedAuthorization */
     protected $exception;
 
     public function setUp()
