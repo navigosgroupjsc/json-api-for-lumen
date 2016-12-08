@@ -4,6 +4,8 @@ namespace RealPage\JsonApi\Requests;
 
 use Illuminate\Http\Request as IlluminateRequest;
 use Mockery;
+use Neomerx\JsonApi\Document\Link;
+use Neomerx\JsonApi\Document\Error;
 use Neomerx\JsonApi\Exceptions\ErrorCollection;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use PHPUnit\Framework\TestCase;
@@ -144,4 +146,34 @@ class RequestTest extends TestCase
         $this->request->authorize($action, $object);
     }
 
+    /** @test */
+    public function authorizeShouldThrowExceptionWithError()
+    {
+        $expectedError = new Error(
+            $id = null,
+            $link = new Link('https://tools.ietf.org/html/rfc7231#section-6.5.3'),
+            $status = '403',
+            $code = null,
+            $title = 'Forbidden',
+            $desc = 'Access is denied for one or more of the specified resources',
+            $source = null,
+            $meta = null
+        );
+
+        $action = 'action';
+        $object = new \stdClass;
+
+        $this->illuminateRequest
+            ->shouldReceive('user->cant')
+            ->with($action, $object)
+            ->andReturn(true); // unauthorized
+
+        $errors = [0 => null];
+        try {
+            $this->request->authorize($action, $object);
+        } catch (JsonApiException $e) {
+            $errors = $e->getErrors();
+        }
+        $this->assertEquals($expectedError, $errors[0]);
+    }
 }

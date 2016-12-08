@@ -36,19 +36,4 @@ class ErrorFactoryTest extends \PHPUnit_Framework_TestCase
         $expectedIdError = new Error(1, $customLink, '406', '12', $title, $detail, null, ['this' => 'is meta']);
         $this->assertEquals($expectedIdError, $idError);
     }
-
-    public function testUnauthorizedErrorGeneration()
-    {
-        $link                 = new Link('https://tools.ietf.org/html/rfc7231#section-6.5.3');
-        $title                = 'Forbidden';
-        $detail               = 'Access is denied for one or more of the specified resources';
-        $defaultError         = ErrorFactory::buildUnauthorized();
-        $expectedDefaultError = new Error(null, $link, '403', null, $title, $detail);
-        $this->assertEquals($expectedDefaultError, $defaultError);
-
-        $customLink      = new Link('http://docs.myapp.com/errors#specific-error');
-        $idError         = ErrorFactory::buildUnauthorized(1, $customLink, '12', null, ['this' => 'is meta']);
-        $expectedIdError = new Error(1, $customLink, '403', '12', $title, $detail, null, ['this' => 'is meta']);
-        $this->assertEquals($expectedIdError, $idError);
-    }
 }

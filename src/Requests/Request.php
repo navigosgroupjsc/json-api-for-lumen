@@ -4,6 +4,8 @@ namespace RealPage\JsonApi\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request as IlluminateRequest;
+use Neomerx\JsonApi\Document\Error;
+use Neomerx\JsonApi\Document\Link;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use RealPage\JsonApi\Authorization\RequestFailedAuthorization;
 use RealPage\JsonApi\ErrorFactory;
@@ -68,10 +70,13 @@ class Request
     ) {
         if ($this->request()->user()->cant($action, $object)) {
             throw new RequestFailedAuthorization(
-                ErrorFactory::buildUnauthorized(
+                new Error(
                     $id = null,
-                    $aboutLink = null,
+                    $link = new Link('https://tools.ietf.org/html/rfc7231#section-6.5.3'),
+                    $status = '403',
                     $code = null,
+                    $title = 'Forbidden',
+                    $desc = 'Access is denied for one or more of the specified resources',
                     $source,
                     $meta = null
                 )
