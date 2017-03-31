@@ -50,11 +50,11 @@ class EncoderService
             if (isset($config['jsonapi'])) {
                 if (is_array($config['jsonapi'])) {
                     $encoder->withJsonApiVersion($config['jsonapi']);
-                } else {
+                } elseif ($config['jsonapi'] === true) {
                     $encoder->withJsonApiVersion();
                 }
             }
-            if (isset($config['meta'])) {
+            if (isset($config['meta']) && is_array($config['meta'])) {
                 $encoder->withMeta($config['meta']);
             }
 
