@@ -102,6 +102,99 @@ In the controller you'd just call validate on the request:
         // do stuff
     }
 ```
+## Encoder
+
+Configures instances of `Neomerx\JsonApi\Encoder\Encoder` to encode your JSONAPI responses.
+
+You can configure a default encoder like so in `config/json-api.php`:
+``` php
+<?php
+return [
+    'media-type' => 'application/vnd.api+json',
+    'schemas' => [
+        App\Models\MyModel::class => App\Schemas\MySchema::class,
+    ],
+    'jsonapi' => true,
+    'encoder-options' => [
+        'options' => JSON_PRETTY_PRINT,
+    ],
+    'meta' => [
+        'apiVersion' => '1.1',
+    ],
+];
+```
+
+You can then retrieve the encoder in your Controller class:
+
+``` php
+<?php
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use RealPage\JsonApi\EncoderService;
+use App\Model\MyModel;
+
+class MyController extends ApiController
+{
+    protected $status;
+    protected $encoder;
+
+    public function __construct(EncoderService $encoder)
+    {
+        $this->encoder = $encoder->getEncoder();
+    }
+
+    public function index(Request $request)
+    {
+        $data = [
+            new MyModel(1, 'Some', "Attribute")
+        ];
+
+        return response($this->encoder->encodeData($data));
+    }
+}
+```
+
+Additional named controllers can be configured like:
+``` php
+<?php
+return [
+    'media-type' => 'application/vnd.api+json',
+    'schemas' => [
+        App\Models\MyModel::class => App\Schemas\MySchema::class,
+    ],
+    'jsonapi' => true,
+    'encoder-options' => [
+        'options' => JSON_PRETTY_PRINT,
+    ],
+    'meta' => [
+        'apiVersion' => '1.1',
+    ],
+    'encoders' => [
+        'custom' => [
+            'jsonapi' => true,
+            'encoder-options' => [
+                'options' => JSON_PRETTY_PRINT,
+            ],
+            'meta' => [
+                'apiVersion' => '2.0',
+            ],
+        ]
+    ]
+];
+```
+
+and then retrieved like:
+
+```php
+    $this->encoder = $encoder->getEncoder('custom');
+```
+
+- `schemas` are shared by all encoder instances
+- If `jsonapi` is set to true, `$encoder->withJsonApiVersion()` will be called. If `jsonapi` is an array, it will be passed as a parameter.
+- If `meta` is an array, it will be passed as `$meta` to `$encoder->withMeta($meta)`.
+- `encoder-options` are passed as parameters to `Neomerx\JsonApi\Encoder\EncoderOptions`.
 
 ## Change log
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
