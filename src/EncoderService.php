@@ -60,7 +60,7 @@ class EncoderService
 
             $this->encoders[$name] = $encoder;
         }
-        return $encoder;
+        return $this->encoders[$name];
     }
 
     protected function getEncoderOptions(array $config)
