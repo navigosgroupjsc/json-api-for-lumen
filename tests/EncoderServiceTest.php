@@ -100,6 +100,50 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
         }
     }
 
+    public function testSetMetaAndJsonApiVersion()
+    {
+        $config = [
+            'schemas' => [],
+        ];
+        $encoder_service = new EncoderService($config);
+        $encoder = $encoder_service->getEncoder();
+        $this->assertNull($this->getProperty($encoder, 'meta'));
+        $this->assertFalse($this->getProperty($encoder, 'isAddJsonApiVersion'));
+        $this->assertNull($this->getProperty($encoder, 'jsonApiVersionMeta'));
+
+        $config = [
+            'schemas' => [],
+            'jsonapi' => true,
+            'meta' => [
+                'apiVersion' => '1.0',
+            ],
+        ];
+        $encoder_service = new EncoderService($config);
+        $encoder = $encoder_service->getEncoder();
+        $this->assertEquals($config['meta'], $this->getProperty($encoder, 'meta'));
+        $this->assertEquals($config['jsonapi'], $this->getProperty($encoder, 'isAddJsonApiVersion'));
+        $this->assertNull($this->getProperty($encoder, 'jsonApiVersionMeta'));
+
+        $config = [
+            'schemas' => [],
+            'jsonapi' => [
+                'foo' => 'bar',
+            ],
+        ];
+        $encoder_service = new EncoderService($config);
+        $encoder = $encoder_service->getEncoder();
+        $this->assertEquals($config['jsonapi'], $this->getProperty($encoder, 'jsonApiVersionMeta'));
+        $this->assertTrue($this->getProperty($encoder, 'isAddJsonApiVersion'));
+    }
+
+    protected static function getProperty($object, $name)
+    {
+        $reflection = new \ReflectionClass($object);
+        $property = $reflection->getProperty($name);
+        $property->setAccessible(true);
+        return $property->getValue($object);
+    }
+
     protected static function getMethod($class, $name)
     {
         $class  = new \ReflectionClass($class);
