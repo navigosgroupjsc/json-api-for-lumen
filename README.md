@@ -156,7 +156,7 @@ class MyController extends ApiController
 }
 ```
 
-Additional named controllers can be configured like:
+Additional named encoders can be configured like:
 ``` php
 <?php
 return [
@@ -190,11 +190,6 @@ and then retrieved like:
 ```php
     $this->encoder = $encoder->getEncoder('custom');
 ```
-
-- `schemas` are shared by all encoder instances
-- If `jsonapi` is set to true, `$encoder->withJsonApiVersion()` will be called. If `jsonapi` is an array, it will be passed as a parameter.
-- If `meta` is an array, it will be passed as `$meta` to `$encoder->withMeta($meta)`.
-- `encoder-options` are passed as parameters to `Neomerx\JsonApi\Encoder\EncoderOptions`.
 
 ## Change log
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
