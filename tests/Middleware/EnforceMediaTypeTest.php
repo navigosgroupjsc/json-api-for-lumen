@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use RealPage\JsonApi\MediaTypeGuard;
 
-class EnforceMediaTypeTest extends \PHPUnit_Framework_TestCase
+class EnforceMediaTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testHandlesInvalidExistingContentTypeRequests()
     {

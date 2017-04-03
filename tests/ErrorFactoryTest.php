@@ -5,7 +5,7 @@ namespace RealPage\JsonApi;
 use Neomerx\JsonApi\Document\Link;
 use Neomerx\JsonApi\Document\Error;
 
-class ErrorFactoryTest extends \PHPUnit_Framework_TestCase
+class ErrorFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testUnsupportedMediaTypeErrorGeneration()
     {

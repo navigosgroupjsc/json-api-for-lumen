@@ -4,7 +4,7 @@ namespace RealPage\JsonApi;
 
 use Illuminate\Http\Request;
 
-class MediaTypeGuardTest extends \PHPUnit_Framework_TestCase
+class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
 {
     protected $contentType;
 
