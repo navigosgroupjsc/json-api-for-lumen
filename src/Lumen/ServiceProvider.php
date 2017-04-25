@@ -10,6 +10,8 @@ class ServiceProvider extends IlluminateServiceProvider
 {
     public function register()
     {
+        $this->app->configure('json-api');
+
         $this->mergeConfigFrom(__DIR__ . '/../../config/json-api.php', 'json-api');
 
         $this->app->bind(MediaTypeGuard::class, function ($app) {
