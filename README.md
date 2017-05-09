@@ -202,13 +202,5 @@ $ composer test
 ## Contributing
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-## Security
-If you discover any security related issues, please email [ben.kuhl@realpage.com](mailto:ben.kuhl@realpage.com) instead of using the issue tracker.
-
-## Credits
-- Ben Kuhl
-- John Laswell
-- David Yurek
-
 ## License
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
