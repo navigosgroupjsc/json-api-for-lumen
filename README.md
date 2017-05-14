@@ -44,15 +44,16 @@ Use Laravel's validation capabilities to validate your requests and this package
 Add this entry to your exception handler
 
 ```php
+use Illuminate\Http\Response;
 use Neomerx\JsonApi\Encoder\Encoder;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use Neomerx\JsonApi\Contracts\Http\Headers\MediaTypeInterface;
 
 // automatically encode exceptions as valid json-api json responses
 if ($e instanceof JsonApiException) {
-    return response(Encoder::instance()->encodeErrors($e->getErrors()), $e->getHttpCode(), [
-        'Content-Type' => MediaTypeInterface::JSON_API_MEDIA_TYPE,
-    ]);
+    return new Response(Encoder::instance()->encodeErrors($e->getErrors()), $e->getHttpCode(), [
+            'Content-Type' => MediaTypeInterface::JSON_API_MEDIA_TYPE,
+        ]);
 }
 ```
 
