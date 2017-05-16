@@ -73,7 +73,7 @@ class MyValidator extends ValidatesRequests
     
     public function messages() : array
     {
-        return array_merge(parent::rules(), [
+        return array_merge(parent::messages(), [
             'data.attributes.name.required' => 'A name is required',
         ]);
     }
