@@ -66,14 +66,14 @@ class MyValidator extends ValidatesRequests
 {
     public function rules() : array
     {
-        return parent::rules([
+        return array_merge(parent::rules(), [
             'data.attributes.name' => 'required',
         ]);
     }
     
     public function messages() : array
     {
-        return parent::messages([
+        return array_merge(parent::rules(), [
             'data.attributes.name.required' => 'A name is required',
         ]);
     }
