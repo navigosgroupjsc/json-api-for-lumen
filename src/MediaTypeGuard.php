@@ -8,14 +8,20 @@ class MediaTypeGuard
 {
     protected $contentType;
 
-    public function __construct(string $contentType)
+    public function __construct(string $contentType, string $acceptHeaderPolicy)
     {
         $this->contentType = $contentType;
+        $this->acceptHeaderPolicy = $acceptHeaderPolicy;
     }
 
     public function getContentType(): string
     {
         return $this->contentType;
+    }
+
+    public function getAcceptHeaderPolicy(): string
+    {
+        return $this->acceptHeaderPolicy;
     }
 
     public function validateExistingContentType(Request $request): bool
@@ -43,10 +49,19 @@ class MediaTypeGuard
 
     public function hasCorrectlySetAcceptHeader(Request $request): bool
     {
-        $accept = $request->header('Accept');
-        if ('*/*' !== $accept) {
-            return substr_count($accept, $this->getContentType()) > substr_count($accept, $this->getContentType() . ';');
+        if ($this->acceptHeaderPolicy === 'ignore') {
+            return true;
         }
-        return true;
+
+        $accept = $request->header('Accept');
+        if (empty($accept)) {
+            return $this->acceptHeaderPolicy !== 'require';
+        }
+
+        if ('*/*' === $accept) {
+            return true;
+        }
+
+        return substr_count($accept, $this->getContentType()) > substr_count($accept, $this->getContentType() . ';');
     }
 }

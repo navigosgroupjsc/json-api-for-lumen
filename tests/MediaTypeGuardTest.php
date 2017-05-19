@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
 {
+    protected $acceptHeaderPolicy;
     protected $contentType;
 
     /** @var MediaTypeGuard */
@@ -13,13 +14,15 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->contentType = 'application/vnd.api+json';
-        $this->guard       = new MediaTypeGuard($this->contentType);
+        $this->contentType        = 'application/vnd.api+json';
+        $this->acceptHeaderPolicy = 'default';
+        $this->guard              = new MediaTypeGuard($this->contentType, $this->acceptHeaderPolicy);
     }
 
     public function testIsBuiltWithDependencies()
     {
         $this->assertEquals($this->contentType, $this->guard->getContentType());
+        $this->assertEquals($this->acceptHeaderPolicy, $this->guard->getAcceptHeaderPolicy());
     }
 
     public function testExistingContentTypeValidation()
@@ -95,18 +98,26 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
 
     public function testDeterminesCorrectlySetAcceptHeader()
     {
+        $guardIgnoringAcceptHeader = new MediaTypeGuard($this->contentType, 'ignore');
+        $guardRequiringAcceptHeader = new MediaTypeGuard($this->contentType, 'require');
+
         $validWildcardAcceptRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
         $validStandardAcceptRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
         $invalidStandardAcceptRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
         $invalidAcceptRequest         = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
+        $withoutAcceptRequest         = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
         $validWildcardAcceptRequest->expects($this->any())->method('header')->with('Accept')->willReturn('*/*');
         $validStandardAcceptRequest->expects($this->any())->method('header')->with('Accept')->willReturn('application/vnd.api+json, application/json');
         $invalidStandardAcceptRequest->expects($this->any())->method('header')->with('Accept')->willReturn('application/vnd.api+json; test=true, application/json');
         $invalidAcceptRequest->expects($this->any())->method('header')->with('Accept')->willReturn('application/json');
+        $withoutAcceptRequest->expects($this->any())->method('header')->with('Accept')->willReturn(null);
 
         $this->assertTrue($this->guard->hasCorrectlySetAcceptHeader($validWildcardAcceptRequest));
         $this->assertTrue($this->guard->hasCorrectlySetAcceptHeader($validStandardAcceptRequest));
         $this->assertFalse($this->guard->hasCorrectlySetAcceptHeader($invalidStandardAcceptRequest));
+        $this->assertTrue($guardIgnoringAcceptHeader->hasCorrectlySetAcceptHeader($invalidStandardAcceptRequest));
         $this->assertFalse($this->guard->hasCorrectlySetAcceptHeader($invalidAcceptRequest));
+        $this->assertTrue($this->guard->hasCorrectlySetAcceptHeader($withoutAcceptRequest));
+        $this->assertFalse($guardRequiringAcceptHeader->hasCorrectlySetAcceptHeader($withoutAcceptRequest));
     }
 }
