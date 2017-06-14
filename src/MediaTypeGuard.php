@@ -36,7 +36,7 @@ class MediaTypeGuard
     public function hasCorrectHeadersForData(Request $request): bool
     {
         if ($this->clientRequestHasJsonApiData($request)) {
-            return $this->contentTypeIsValid($request->header('Content-Type'));
+            return $request->hasHeader('Content-Type') && $this->contentTypeIsValid($request->header('Content-Type'));
         }
         return true;
     }

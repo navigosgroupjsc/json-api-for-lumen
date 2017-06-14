@@ -70,6 +70,10 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
             'all',
             'header',
         ])->getMock();
+        $emptyWithoutRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+            'all',
+            'header',
+        ])->getMock();
         $fullValidRequest    = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
             'all',
             'header',
@@ -78,19 +82,29 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
             'all',
             'header',
         ])->getMock();
+        $fullWithoutRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+            'all',
+            'header',
+        ])->getMock();
         $emptyValidRequest->expects($this->any())->method('all')->willReturn([]);
         $emptyValidRequest->expects($this->any())->method('header')->willReturn($validContentType);
         $emptyInvalidRequest->expects($this->any())->method('all')->willReturn([]);
         $emptyInvalidRequest->expects($this->any())->method('header')->willReturn($invalidContentType);
+        $emptyWithoutRequest->expects($this->any())->method('all')->willReturn([]);
+        $emptyWithoutRequest->expects($this->any())->method('header')->willReturn(null);
         $fullValidRequest->expects($this->any())->method('all')->willReturn(['data' => 'exists']);
         $fullValidRequest->expects($this->any())->method('header')->willReturn($validContentType);
         $fullInvalidRequest->expects($this->any())->method('all')->willReturn(['data' => 'exists']);
         $fullInvalidRequest->expects($this->any())->method('header')->willReturn($invalidContentType);
+        $fullWithoutRequest->expects($this->any())->method('all')->willReturn(['data' => 'exists']);
+        $fullWithoutRequest->expects($this->any())->method('header')->willReturn(null);
 
         $this->assertTrue($this->guard->hasCorrectHeadersForData($emptyValidRequest));
         $this->assertTrue($this->guard->hasCorrectHeadersForData($emptyInvalidRequest));
+        $this->assertTrue($this->guard->hasCorrectHeadersForData($emptyWithoutRequest));
         $this->assertTrue($this->guard->hasCorrectHeadersForData($fullValidRequest));
         $this->assertFalse($this->guard->hasCorrectHeadersForData($fullInvalidRequest));
+        $this->assertFalse($this->guard->hasCorrectHeadersForData($fullWithoutRequest));
     }
 
     public function testDeterminesCorrectlySetAcceptHeader()
