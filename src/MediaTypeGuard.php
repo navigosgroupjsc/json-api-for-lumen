@@ -23,9 +23,10 @@ class MediaTypeGuard
         return str_is($this->getContentType(), $request->header('Accept')) || str_is('', $request->header('Accept'));
     }
 
-    public function clientRequestHasJsonApiData(Request $request)
+    public function clientRequestMustHaveContentTypeHeader(Request $request)
     {
-        return !empty($request->all());
+        $method = $request->method();
+        return $method === 'POST' || $method === 'PATCH';
     }
 
     public function contentTypeIsValid(string $contentType): bool
@@ -35,8 +36,8 @@ class MediaTypeGuard
 
     public function hasCorrectHeadersForData(Request $request): bool
     {
-        if ($this->clientRequestHasJsonApiData($request)) {
-            return $this->contentTypeIsValid($request->header('Content-Type'));
+        if ($this->clientRequestMustHaveContentTypeHeader($request)) {
+            return $request->hasHeader('Content-Type') && $this->contentTypeIsValid($request->header('Content-Type'));
         }
         return true;
     }

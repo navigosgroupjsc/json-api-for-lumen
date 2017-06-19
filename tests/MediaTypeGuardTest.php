@@ -36,15 +36,18 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->guard->validateExistingContentType($validContentTypeRequest));
     }
 
-    public function testRecognizesIfJsonDataIsPresent()
+    public function testRecognizesIfRequestMustHaveContentTypeHeader()
     {
-        $emptyRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['all'])->getMock();
-        $fullRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['all'])->getMock();
-        $emptyRequest->expects($this->any())->method('all')->willReturn([]);
-        $fullRequest->expects($this->any())->method('all')->willReturn(['data' => 'exists']);
+        $getRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['method'])->getMock();
+        $postRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['method'])->getMock();
+        $patchRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['method'])->getMock();
+        $getRequest->expects($this->any())->method('method')->willReturn('GET');
+        $postRequest->expects($this->any())->method('method')->willReturn('POST');
+        $patchRequest->expects($this->any())->method('method')->willReturn('POST');
 
-        $this->assertFalse($this->guard->clientRequestHasJsonApiData($emptyRequest));
-        $this->assertTrue($this->guard->clientRequestHasJsonApiData($fullRequest));
+        $this->assertFalse($this->guard->clientRequestMustHaveContentTypeHeader($getRequest));
+        $this->assertTrue($this->guard->clientRequestMustHaveContentTypeHeader($postRequest));
+        $this->assertTrue($this->guard->clientRequestMustHaveContentTypeHeader($patchRequest));
     }
 
     public function testContentTypeIsValid()
@@ -62,35 +65,49 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
     {
         $validContentType    = 'application/vnd.api+json';
         $invalidContentType  = 'application/json';
-        $emptyValidRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
-            'all',
+        $getValidRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
             'header',
+            'method',
         ])->getMock();
-        $emptyInvalidRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
-            'all',
+        $getInvalidRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
             'header',
+            'method',
         ])->getMock();
-        $fullValidRequest    = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
-            'all',
+        $getWithoutRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
             'header',
+            'method',
         ])->getMock();
-        $fullInvalidRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
-            'all',
+        $postValidRequest    = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
             'header',
+            'method',
         ])->getMock();
-        $emptyValidRequest->expects($this->any())->method('all')->willReturn([]);
-        $emptyValidRequest->expects($this->any())->method('header')->willReturn($validContentType);
-        $emptyInvalidRequest->expects($this->any())->method('all')->willReturn([]);
-        $emptyInvalidRequest->expects($this->any())->method('header')->willReturn($invalidContentType);
-        $fullValidRequest->expects($this->any())->method('all')->willReturn(['data' => 'exists']);
-        $fullValidRequest->expects($this->any())->method('header')->willReturn($validContentType);
-        $fullInvalidRequest->expects($this->any())->method('all')->willReturn(['data' => 'exists']);
-        $fullInvalidRequest->expects($this->any())->method('header')->willReturn($invalidContentType);
+        $postInvalidRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+            'header',
+            'method',
+        ])->getMock();
+        $postWithoutRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+            'header',
+            'method',
+        ])->getMock();
+        $getValidRequest->expects($this->any())->method('method')->willReturn('GET');
+        $getValidRequest->expects($this->any())->method('header')->willReturn($validContentType);
+        $getInvalidRequest->expects($this->any())->method('method')->willReturn('GET');
+        $getInvalidRequest->expects($this->any())->method('header')->willReturn($invalidContentType);
+        $getWithoutRequest->expects($this->any())->method('method')->willReturn('GET');
+        $getWithoutRequest->expects($this->any())->method('header')->willReturn(null);
+        $postValidRequest->expects($this->any())->method('method')->willReturn('POST');
+        $postValidRequest->expects($this->any())->method('header')->willReturn($validContentType);
+        $postInvalidRequest->expects($this->any())->method('method')->willReturn('POST');
+        $postInvalidRequest->expects($this->any())->method('header')->willReturn($invalidContentType);
+        $postWithoutRequest->expects($this->any())->method('method')->willReturn('POST');
+        $postWithoutRequest->expects($this->any())->method('header')->willReturn(null);
 
-        $this->assertTrue($this->guard->hasCorrectHeadersForData($emptyValidRequest));
-        $this->assertTrue($this->guard->hasCorrectHeadersForData($emptyInvalidRequest));
-        $this->assertTrue($this->guard->hasCorrectHeadersForData($fullValidRequest));
-        $this->assertFalse($this->guard->hasCorrectHeadersForData($fullInvalidRequest));
+        $this->assertTrue($this->guard->hasCorrectHeadersForData($getValidRequest));
+        $this->assertTrue($this->guard->hasCorrectHeadersForData($getInvalidRequest));
+        $this->assertTrue($this->guard->hasCorrectHeadersForData($getWithoutRequest));
+        $this->assertTrue($this->guard->hasCorrectHeadersForData($postValidRequest));
+        $this->assertFalse($this->guard->hasCorrectHeadersForData($postInvalidRequest));
+        $this->assertFalse($this->guard->hasCorrectHeadersForData($postWithoutRequest));
     }
 
     public function testDeterminesCorrectlySetAcceptHeader()
