@@ -28,5 +28,5 @@ return [
     //
     // If accept-header-policy is set to 'ignore', api will response all requests with a
     // json api document regardless of Accept header.
-    'accept-header-policy' => 'default',
+    'accept-header-policy' => 'require',
 ];
