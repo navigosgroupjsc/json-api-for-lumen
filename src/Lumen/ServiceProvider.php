@@ -15,7 +15,7 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../../config/json-api.php', 'json-api');
 
         $this->app->bind(MediaTypeGuard::class, function ($app) {
-            return new MediaTypeGuard(config('json-api.media-type'), config('json-api.accept-header-policy');
+            return new MediaTypeGuard(config('json-api.media-type'), config('json-api.accept-header-policy'));
         });
 
         $this->app->bind(EncoderService::class, function ($app) {
